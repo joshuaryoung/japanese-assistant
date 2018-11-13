@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
 
+import SearchBar from './SearchBar';
+
 var activeLinkHighlight = {x: 0, y: 0};
 
 class NavBar extends Component
@@ -19,15 +21,34 @@ class NavBar extends Component
 		}
 
     return (
-			<div className = "nav-container">
+			<div className = "nav-container" style={style}>
 				<Brand brand = {this.props.brand} />
 				{this.props.links ? <JsxLinks links = {this.props.links} /> : null}
         {this.props.highlightEffect ? <div className = "navbar-highlight-effect" style = {{position: 'absolute', top: activeLinkHighlight.y, left: activeLinkHighlight.x}} /> : null}
+          <SearchBar
+            handleInputChange={this.props.handleInputChange}
+            handleSubmitClick={this.props.handleSubmitClick}
+            isLoggedIn={this.props.isLoggedIn}
+            handleSearchCallBack={this.props.handleSearchCallBack}
+            handleShowSearchResults = {this.props.handleShowSearchResults}
+          />
         {this.props.motto ? <Motto motto = {this.props.motto} /> : null}
-        {this.props.login ? <Login /> : null}
+        {this.props.isLoggedIn ? <a href="#" onClick = { this.props.handleLogout } > Logout </a> : <Login />}
 			</div>
     );
   }
+}
+
+const style =
+{
+  backgroundColor: 'gray',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  position: 'absolute',
+  width: '100%',
+  zIndex: 2,
+  top: 0,
+  left: 0
 }
 
 function JsxLinks(props)
@@ -61,7 +82,7 @@ function Login(props)
 {
 	return (
 		<div className = "login">
-			Log In / Sign Up
+			<NavLink to='/UserLogin'>Log In</NavLink> / <NavLink to='/AddUser'>Sign Up</NavLink>
 		</div>
 	);
 }
