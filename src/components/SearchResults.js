@@ -46,13 +46,13 @@ class ParseSearchResults extends React.Component
 
 	shouldComponentUpdate(nextProps, nextState)
 	{
-		const thisPropsAccArray = this.props.newData.map( (mapData) =>
-			mapData.japanese.accValue
-		);
-		const nextPropsAccArray = nextProps.newData.map( (mapData) =>
-			mapData.japanese.accValue
-		);
-		console.log('thisPropsAccArray:', thisPropsAccArray, 'nextPropsAccArray:', nextPropsAccArray)
+		// const thisPropsAccArray = this.props.newData.map( (mapData) =>
+			// mapData.japanese.accValue
+		// );
+		// const nextPropsAccArray = nextProps.newData.map( (mapData) =>
+			// mapData.japanese.accValue
+		// );
+		// console.log('thisPropsAccArray:', thisPropsAccArray, 'nextPropsAccArray:', nextPropsAccArray)
 		// if(nextProps !== this.props)
 		// {
 			// console.log('CHANGE DETECTED IN PROPS', this.props, nextProps);
@@ -97,7 +97,6 @@ class ParseSearchResults extends React.Component
   render()
   {
     displayData = displayCards(this.props.newData, this.props.handleAddToFlashCard, null, this.props.isLoggedIn)
-		console.log('PARSED SEARCH RESULTS PROPS:', this.props)
     return(
       displayData ? displayData : null
     );

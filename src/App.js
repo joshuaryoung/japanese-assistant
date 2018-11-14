@@ -50,7 +50,7 @@ class App extends Component {
       email: '',
       name: '',
       serverResponse: '',
-			pitchArray: []
+			pitchArray: null
     };
 
     this.state = this.initialState;
@@ -120,8 +120,9 @@ class App extends Component {
 				newData.map( (mapData, i) =>
 				{
 					axios.get(wikiUrl, {params: {...sectionsParams, page: mapData.japanese.kanji[0]}})
-					.then((response) =>
+					.then((response) =>  // SECTION SUCCESS
 					{
+						console.log('Section CALLBACK success. i:', i);
 						if(response.data.parse)
 						{
 							let japaneseSecFound = false;
@@ -132,93 +133,71 @@ class App extends Component {
 								if(japaneseSecFound && secMap.line === 'Pronunciation')
 								{
 									pIndex = k+1;
-									console.log(mapData.japanese.kanji, 'Pronunciation section:', pIndex);
 									k = sections.length;
-									console.log('mapData[' + i + ']', mapData)
 									axios.get(wikiUrl, {params: {...pronunciationParams, page: mapData.japanese.kanji[0], section: pIndex}})
-									 .then(response =>
+									 .then(response => // PRONUNCIATION SUCCESS
 									 {
+										 console.log('Section CALLBACK success. i:', i, 'k:', k);
 										 if(response.data.parse)
 										 {
 											 pWikiText = response.data.parse.wikitext['*'];
 											 accString = pWikiText.match(accRegex);
 											 if(accString)
 											 {
-												 console.log(mapData.japanese.kanji, accString, accString[0]);
 												 accValue = this.accValExtraction(accString[0]);
 											 }
-											 if(accValue > -1)
+											 if(accValue > -1) // ACC VALUE IS ACTUAL PITCH VALUE
 											 {
-												 newData[i].japanese.accValue = accValue;
-												 console.log(mapData, accValue);
-												 console.log(mapData, pWikiText);
-												if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-												{
-													console.log('handleSDataUpdate about to be called');
+												newData[i].japanese.accValue = accValue;
+												console.log('handleSDataUpdate about to be called and accValue was found');
+												this.handleSDataUpdate();
+											 }else
+											 {  // ACC VALUE NOT AVAILABLE
+												 
+													console.log('handleSDataUpdate about to be called and acc value not available');
 													this.handleSDataUpdate();
-												}
-											 }else {
-												 if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-													{
-														console.log('handleSDataUpdate about to be called');
-														this.handleSDataUpdate();
-													}
-												 throw 'no accent value found in accString'
+												  throw 'no accent value found in accString'
 											 }
 										 }else {
-											 if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-													{
-														console.log('handleSDataUpdate about to be called');
-														this.handleSDataUpdate();
-													}
-											 throw 'wiktionary entry not found';
-										 }
-									 })
-									 .catch(error =>
-										{
-											if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-											{
 												console.log('handleSDataUpdate about to be called');
 												this.handleSDataUpdate();
-											}
-											console.log(error);
+											  throw 'wiktionary entry not found';
+										 }
+									 })
+									 .catch(error =>  // PRONUNCIATION ERROR
+										{
+											console.log('handleSDataUpdate about to be called');
+											this.handleSDataUpdate();
+											console.log('Pronunciation callback error: ', error, 'i:', i);
 										})
 								}
 								if(!japaneseSecFound && secMap.line === 'Japanese')
 								{
 									japaneseSecFound = true;
-									console.log(mapData, 'Japanese Section: ', k+1);
 								}
 							});
+							
+							//AFTER JAPANESE SECTION IS FOUND OR LOOP FINISHES
 							if(!japaneseSecFound)
 							{
-								if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-								{
-									console.log('handleSDataUpdate about to be called');
-									this.handleSDataUpdate();
-								}
+								console.log('handleSDataUpdate about to be called');
+								this.handleSDataUpdate();
 								console.log('No Japanese Section Found');
 								throw 'No Japanese Section Found';
 							}
-							if (pIndex === -1)
+							if (pIndex === -1) // NO PRONUNCIATION SECTION
 							{
-								if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-								{
-									console.log('handleSDataUpdate about to be called');
-									this.handleSDataUpdate();
-								}
+								console.log('handleSDataUpdate about to be called');
+								this.handleSDataUpdate();
 								throw 'No pronunciation section found'
 							}
 						}
 					})
-					.catch(error =>
+					.catch(error =>  // SECTION ERROR
 					{
-						if(i + 1 == newData.length) // LOGIC TO DETERMINE IF THIS IS THE LAST CALLBACK
-						{
-							console.log('handleSDataUpdate about to be called');
-							this.handleSDataUpdate();
-						}
-						console.log(error);
+						console.log('handleSDataUpdate about to be called');
+						this.handleSDataUpdate();
+						console.log('Section error:', error);
 					})
 					
 				});
@@ -260,9 +239,10 @@ class App extends Component {
 
   handleSDataUpdate = (pitchVal, key) =>
   {
+		let pitchArrayBuffer = newData.map( mData => mData.japanese.accValue );
     console.log('handleSDataUpdate called');
-    console.log('sData:', this.state.newData, 'newData', newData);
-		this.setState({sData: newData})
+    console.log('newData', newData, 'pitchArrayBuffer', pitchArrayBuffer);
+		this.setState({sData: newData, pitchArray: pitchArrayBuffer});
   }
 
   handleSubmitClick = (e) =>
@@ -286,7 +266,6 @@ class App extends Component {
   handleSearchCallBack = (response) =>
   {
 		newData = this.handlePopulateData(response.data.data);
-		console.log('NEWDATA:', newData)
 		this.getAccData();
     this.setState({serverResponse: response, sData: newData});
   }
@@ -309,18 +288,15 @@ class App extends Component {
       name: response.name
     });
     this.fetchCardsFromDB();
-    console.log('responseFacebook called', this.state);
   }
 
   handleSaveFlashCardsToDB = (e) =>
   {
-    console.log('FLASHCARDS SAVED', this.state.cards);
     axios.get(mongoUrl+'updatecards', {params: {id: this.state.id, cards: this.state.cards}}).then(response => console.log(response.data), response => console.log(response));
   }
 
   handleAddToFlashCard = (data, i, e) =>
   {
-    console.log('Add to flashcard for: ', i+1);
     let cardsCopy = this.state.cards;
     cardsCopy.push(data);
     this.handleShowDashboardResults();
@@ -332,7 +308,6 @@ class App extends Component {
   {
     let cardsCopy = this.state.cards;
     cardsCopy.splice(i,1);
-    console.log(cardsCopy);
     if(cardsCopy.length < 1)
     {
       this.setState({
@@ -362,13 +337,10 @@ class App extends Component {
     axios.get(mongoUrl+'readcards', {params: {id: this.state.id}})
     .then( (value) =>
       {
-        console.log('line 108 success');
-        console.log(value.data);
         this.setState({cards: value.data, showDashboardResults: true});
       },
       (response) =>
       {
-        console.log('line 114 error');
         console.log(response)
         return response;
       }

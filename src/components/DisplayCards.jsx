@@ -96,9 +96,7 @@ function flattenArray(data)
 
 const scrubDuplicates = (data) =>
 {
-  console.log('scrub duplicate data before scrub:', data);
   let flatData = flattenArray (data);
-  console.log('scrub duplicate data after flattening:', flatData);
 
   if(Array.isArray(flatData))
   {
@@ -111,11 +109,9 @@ const scrubDuplicates = (data) =>
         flatData.splice(dupIndex, 1);
       }
     }
-
-    console.log('scrub duplicate data after scrub (array):', flatData);
+		
     return flatData;
   }else{
-    console.log('scrub duplicate data after scrub (not array):', flatData);
     return flatData;
   }
 }

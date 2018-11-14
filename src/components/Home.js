@@ -4,14 +4,6 @@ import PropTypes from 'prop-types';
 import SearchResults from './SearchResults';
 
 class Home extends React.Component {
-	shouldComponentUpdate(nextProps)
-	{
-		if(this.props !== nextProps)
-		{
-			return true;
-		}
-		return false;
-	}
 
   render () {
     return(
