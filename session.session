@@ -1,31 +1,31 @@
 <NotepadPlus>
     <Session activeView="0">
         <mainView activeIndex="0">
-            <File firstVisibleLine="73" xOffset="0" scrollWidth="5150" startPos="2981" endPos="2981" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\App.js" backupFilePath="" originalFileLastModifTimestamp="2114124305" originalFileLastModifTimestampHigh="30701336" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="0" mapWrapIndentMode="-1" mapIsWrap="no">
-                <Fold line="40" />
-                <Fold line="63" />
-                <Fold line="70" />
-                <Fold line="75" />
-                <Fold line="82" />
-                <Fold line="232" />
-                <Fold line="242" />
-                <Fold line="254" />
-                <Fold line="262" />
-                <Fold line="270" />
-                <Fold line="283" />
-                <Fold line="289" />
+            <File firstVisibleLine="144" xOffset="0" scrollWidth="1991" startPos="5122" endPos="5122" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\App.js" backupFilePath="C:\Users\fkdjs\AppData\Roaming\Notepad++\backup\App.js@2018-11-15_185922" originalFileLastModifTimestamp="-77613042" originalFileLastModifTimestampHigh="30702906" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="0" mapWrapIndentMode="-1" mapIsWrap="no">
+                <Fold line="37" />
+                <Fold line="64" />
+                <Fold line="71" />
+                <Fold line="76" />
+                <Fold line="83" />
+                <Fold line="265" />
+                <Fold line="273" />
+                <Fold line="291" />
                 <Fold line="299" />
-                <Fold line="314" />
-                <Fold line="321" />
-                <Fold line="328" />
-                <Fold line="346" />
-                <Fold line="434" />
+                <Fold line="307" />
+                <Fold line="319" />
+                <Fold line="324" />
+                <Fold line="333" />
+                <Fold line="347" />
+                <Fold line="354" />
+                <Fold line="361" />
             </File>
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="5150" startPos="1265" endPos="1265" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\Home.js" backupFilePath="" originalFileLastModifTimestamp="-1175161910" originalFileLastModifTimestampHigh="30700936" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1139802112" mapWrapIndentMode="-1" mapIsWrap="no" />
-            <File firstVisibleLine="33" xOffset="0" scrollWidth="5150" startPos="1213" endPos="1213" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\SearchResults.js" backupFilePath="" originalFileLastModifTimestamp="-1743578394" originalFileLastModifTimestampHigh="30701289" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1139802112" mapWrapIndentMode="-1" mapIsWrap="no" />
-            <File firstVisibleLine="151" xOffset="0" scrollWidth="5150" startPos="3547" endPos="3547" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\DisplayCards.jsx" backupFilePath="" originalFileLastModifTimestamp="-266492897" originalFileLastModifTimestampHigh="30700938" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1142292480" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="5150" startPos="168" endPos="168" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\Home.js" backupFilePath="" originalFileLastModifTimestamp="1262850795" originalFileLastModifTimestampHigh="30702679" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1139802112" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="5150" startPos="395" endPos="395" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\SearchResults.js" backupFilePath="" originalFileLastModifTimestamp="-275943486" originalFileLastModifTimestampHigh="30702692" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1139802112" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="116" xOffset="0" scrollWidth="5150" startPos="2923" endPos="2923" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\DisplayCards.jsx" backupFilePath="" originalFileLastModifTimestamp="765987517" originalFileLastModifTimestampHigh="30702693" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1142292480" mapWrapIndentMode="-1" mapIsWrap="no" />
             <File firstVisibleLine="0" xOffset="0" scrollWidth="5130" startPos="0" endPos="0" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\SearchBar.js" backupFilePath="" originalFileLastModifTimestamp="1094097599" originalFileLastModifTimestampHigh="30697701" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1142292480" mapWrapIndentMode="-1" mapIsWrap="no" />
             <File firstVisibleLine="18" xOffset="0" scrollWidth="5150" startPos="542" endPos="542" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\server\server.js" backupFilePath="" originalFileLastModifTimestamp="-1733297979" originalFileLastModifTimestampHigh="30697472" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1142292480" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="1740" startPos="98" endPos="98" selMode="0" lang="Normal Text" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\server\.env" backupFilePath="" originalFileLastModifTimestamp="-1391254380" originalFileLastModifTimestampHigh="30696848" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1142292480" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="5150" startPos="542" endPos="542" selMode="0" lang="JavaScript" encoding="-1" filename="C:\Users\fkdjs\Documents\Programming\Web\react\japanese-assistant\src\components\UserLogin.js" backupFilePath="" originalFileLastModifTimestamp="-393677581" originalFileLastModifTimestampHigh="30702698" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1145257984" mapWrapIndentMode="-1" mapIsWrap="no" />
         </mainView>
         <subView activeIndex="0" />
     </Session>

@@ -31,7 +31,7 @@ const mongoUrl = 'http://localhost:3001/mongo',
 				}
 			}];
 			
-var keyword, newData = initialData, accAsyncTotal;
+var keyword, newData = initialData, callBackCounter;
 
 class App extends Component {
   constructor(props)
@@ -76,7 +76,7 @@ class App extends Component {
   initializeSearchVars = () =>
   {
     newData = '';
-		accAsyncTotal = 0;
+		callBackCounter = 0;
     this.setState({pitchArray: []});
   }
 	
@@ -117,87 +117,119 @@ class App extends Component {
 			if(Array.isArray(newData)) // IF DATA IS AN ARRAY
 			{
 				let sections, pWikiText, pIndex = -1, accValue, accString;
+				callBackCounter = newData.length;
 				newData.map( (mapData, i) =>
 				{
-					axios.get(wikiUrl, {params: {...sectionsParams, page: mapData.japanese.kanji[0]}})
+					axios.get(wikiUrl, {params: {...sectionsParams, page: mapData.japanese.kanji[0] ? mapData.japanese.kanji[0] : mapData.japanese.hiragana[0]}})
 					.then((response) =>  // SECTION SUCCESS
 					{
-						console.log('Section CALLBACK success. i:', i);
+						console.log('Section CALLBACK success');
 						if(response.data.parse)
 						{
 							let japaneseSecFound = false;
 							sections = response.data.parse.sections;
-							// FIND JAPANESE SECTION
-							sections.map( (secMap, k) => 
+							sections.map( (secMap, k) => // FIND JAPANESE SECTION
 							{
-								if(japaneseSecFound && secMap.line === 'Pronunciation')
-								{
+								if(japaneseSecFound && secMap.line === 'Pronunciation') // IF JAPANESE SEC FOUND AND K REPRESENTS
+								{																												// THE PRONUNCIATION SECTION
 									pIndex = k+1;
 									k = sections.length;
-									axios.get(wikiUrl, {params: {...pronunciationParams, page: mapData.japanese.kanji[0], section: pIndex}})
-									 .then(response => // PRONUNCIATION SUCCESS
-									 {
-										 console.log('Section CALLBACK success. i:', i, 'k:', k);
-										 if(response.data.parse)
-										 {
-											 pWikiText = response.data.parse.wikitext['*'];
-											 accString = pWikiText.match(accRegex);
-											 if(accString)
-											 {
-												 accValue = this.accValExtraction(accString[0]);
-											 }
-											 if(accValue > -1) // ACC VALUE IS ACTUAL PITCH VALUE
-											 {
+									axios.get(wikiUrl, {params: {...pronunciationParams, page: mapData.japanese.kanji[0] ? mapData.japanese.kanji[0] : mapData.japanese.hiragana[0], section: pIndex}})
+								  .then(response => // PRONUNCIATION SUCCESS
+								  {
+										console.log('Pronunciation CALLBACK success. i:', i, 'k:', k);
+										if(response.data.parse) // IF DATA COMES BACK IN THE CORRECT FORMAT
+										{
+											pWikiText = response.data.parse.wikitext['*'];
+											accString = pWikiText.match(accRegex);
+											if(accString) // IF ACC STRING IS FOUND
+											{
+												accValue = this.accValExtraction(accString[0]);
+											}
+											if(accValue > -1) // ACC VALUE IS ACTUAL PITCH VALUE
+											{
 												newData[i].japanese.accValue = accValue;
 												console.log('handleSDataUpdate about to be called and accValue was found');
 												this.handleSDataUpdate();
-											 }else
-											 {  // ACC VALUE NOT AVAILABLE
-												 
-													console.log('handleSDataUpdate about to be called and acc value not available');
-													this.handleSDataUpdate();
-												  throw 'no accent value found in accString'
-											 }
-										 }else {
-												console.log('handleSDataUpdate about to be called');
+												if(callBackCounter === 1)
+												{
+													console.log('DONE LOADING ACC DATA');
+												}else
+												{
+													console.log('callBackCounter:', callBackCounter, 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana)
+													callBackCounter --;
+												}
+											}else // ACC VALUE NOT AVAILABLE
+											{  
+												console.log('handleSDataUpdate about to be called and acc value not available');
 												this.handleSDataUpdate();
-											  throw 'wiktionary entry not found';
-										 }
-									 })
-									 .catch(error =>  // PRONUNCIATION ERROR
+												throw 'no accent value found in accString'
+											}
+										}else // WIKTIONARY ENTRY NOT FOUND
 										{
 											console.log('handleSDataUpdate about to be called');
 											this.handleSDataUpdate();
-											console.log('Pronunciation callback error: ', error, 'i:', i);
-										})
+											throw 'wiktionary entry not found';
+										}
+									})
+									.catch(error => // PRONUNCIATION ERROR
+									{
+										console.log('handleSDataUpdate about to be called');
+										this.handleSDataUpdate();
+										console.log('Pronunciation callback error: ', error, 'i:', i);
+										if(callBackCounter === 1)
+										{
+											console.log('DONE LOADING ACC DATA', 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana);
+										}else
+										{
+											console.log('callBackCounter:', callBackCounter, 'mapData.japanese.kanji:', mapData.japanese.kanji ? mapData.japanese.kanji : mapData.japanese.hiragana)
+											callBackCounter --;
+										}
+									})
 								}
+								
+								//AFTER JAPANESE SECTION IS FOUND OR LOOP FINISHES
+								if(k + 1 === sections.length)
+								{
+									console.log('callBackCounter:', callBackCounter);
+									callBackCounter --;
+									if(!japaneseSecFound) // NO JAPANESE SECTION FOUND
+									{
+										console.log('handleSDataUpdate about to be called');
+										this.handleSDataUpdate();
+										console.log('No Japanese Section Found');
+										throw 'No Japanese Section Found';
+									}
+									if (pIndex === -1) // NO PRONUNCIATION SECTION
+									{
+										console.log('handleSDataUpdate about to be called');
+										this.handleSDataUpdate();
+										throw 'No pronunciation section found'
+									}
+								}
+								
 								if(!japaneseSecFound && secMap.line === 'Japanese')
 								{
 									japaneseSecFound = true;
 								}
 							});
 							
-							//AFTER JAPANESE SECTION IS FOUND OR LOOP FINISHES
-							if(!japaneseSecFound)
-							{
-								console.log('handleSDataUpdate about to be called');
-								this.handleSDataUpdate();
-								console.log('No Japanese Section Found');
-								throw 'No Japanese Section Found';
-							}
-							if (pIndex === -1) // NO PRONUNCIATION SECTION
-							{
-								console.log('handleSDataUpdate about to be called');
-								this.handleSDataUpdate();
-								throw 'No pronunciation section found'
-							}
+							
 						}
 					})
 					.catch(error =>  // SECTION ERROR
 					{
-						console.log('handleSDataUpdate about to be called');
+						console.log('handleSDataUpdate about to be called, callBackCounter', callBackCounter);
 						this.handleSDataUpdate();
 						console.log('Section error:', error);
+						if(callBackCounter === 1)
+						{
+							console.log('DONE LOADING ACC DATA');
+						}else
+						{
+							console.log('callBackCounter:', callBackCounter, 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana)
+							callBackCounter --;
+						}
 					})
 					
 				});
@@ -266,6 +298,7 @@ class App extends Component {
   handleSearchCallBack = (response) =>
   {
 		newData = this.handlePopulateData(response.data.data);
+		this.handleNewDataSort();
 		this.getAccData();
     this.setState({serverResponse: response, sData: newData});
   }

@@ -16,7 +16,7 @@ class UserLogin extends React.Component
         </button>
       </div> : <FacebookLogin
         appId="245507382984419"
-        autoLoad={true}
+        autoLoad={false}
         isMobile={false}
         fields="name,email,picture"
         onClick={this.props.componentClicked}
