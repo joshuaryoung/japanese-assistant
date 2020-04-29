@@ -112,9 +112,9 @@ app.get('/mongoupdatecards', function(req, res) { // UPDATE
   return(res);
 });
 
-app.listen(process.env.PORT || port);
+app.listen(process.env.REACT_APP_SERVER_PORT || port);
 
-console.log('listening on port', process.env.PORT || port);
+console.log('listening on port', process.env.REACT_APP_SERVER_PORT || port);
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();

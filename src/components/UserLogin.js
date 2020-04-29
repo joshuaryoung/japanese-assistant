@@ -15,7 +15,7 @@ class UserLogin extends React.Component
           Logout
         </button>
       </div> : <FacebookLogin
-        appId="245507382984419"
+        appId={process.env.REACT_APP_FACEBOOK_AP_ID}
         autoLoad={false}
         isMobile={false}
         fields="name,email,picture"
