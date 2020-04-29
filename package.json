@@ -13,7 +13,7 @@
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^3.2.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^3.4.1",
     "react-transition-group": "^2.4.0",
     "unofficial-jisho-api": "^1.1.0",
     "wiktionary": "^1.2.0"
@@ -23,5 +23,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

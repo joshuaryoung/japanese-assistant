@@ -13,10 +13,10 @@ import { displayCards, commaSeparate, flattenArray, scrub, accValExtraction, scr
 
 import './App.css';
 
-const mongoUrl = 'http://localhost:3001/mongo',
-      fbAuthUrl = 'http://localhost:3001/auth/facebookProxy',
-      jishoUrl = 'http://localhost:3001/',
-			wikiUrl = 'http://localhost:3001/acc',
+const mongoUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/mongo`,
+      fbAuthUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/auth/facebookProxy`,
+      jishoUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/`,
+			wikiUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/acc`,
 			sectionsParams = {action: 'parse', prop: 'sections', format: 'json'},
 			pronunciationParams = {action: 'parse', prop: 'wikitext', format: 'json'},
 			accRegex = /(acc.=\S|acc=\S)/m,
@@ -54,6 +54,9 @@ class App extends Component {
     };
 
     this.state = this.initialState;
+		if (this.state.isLoggedIn) {
+			this.fetchCardsFromDB()
+		}
   }
 	
 	handleNewDataSort = () =>
@@ -378,11 +381,6 @@ class App extends Component {
         return response;
       }
     );
-  }
-
-  componentDidMount()
-  {
-    this.state.isLoggedIn ? this.fetchCardsFromDB() : null
   }
 
   render() {
