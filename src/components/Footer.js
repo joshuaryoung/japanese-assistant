@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 class Footer extends React.Component {
   render ()
@@ -7,7 +7,7 @@ class Footer extends React.Component {
       <div style={style}>
         FOOTER
       </div>
-    );
+    )
   }
 }
 
@@ -21,4 +21,4 @@ const style=
   backgroundColor: "gray"
 }
 
-export default Footer;
+export default Footer

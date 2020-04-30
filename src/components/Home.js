@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import SearchResults from './SearchResults';
+import SearchResults from './SearchResults'
 
 class Home extends React.Component {
 
@@ -26,7 +26,7 @@ class Home extends React.Component {
                                       : null
         }
       </div>
-    );
+    )
   }
 }
 
@@ -37,4 +37,4 @@ const style =
   left: 0,
 }
 
-export default Home;
+export default Home

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { GoogleLogin } from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
+import { GoogleLogin } from 'react-google-login'
+import FacebookLogin from 'react-facebook-login'
 
 class UserLogin extends React.Component
 {
@@ -21,13 +21,13 @@ class UserLogin extends React.Component
         fields="name,email,picture"
         onClick={this.props.componentClicked}
         callback={this.props.responseFacebook}
-        />);
+        />)
 
     return(
       <div>
         {fbContent}
       </div>
-    );
+    )
   }
 }
 
@@ -36,4 +36,4 @@ const style=
   textAlign: 'center'
 }
 
-export default UserLogin;
+export default UserLogin

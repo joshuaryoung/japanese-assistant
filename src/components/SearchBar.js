@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
+import React from 'react'
+import PropTypes from 'prop-types'
+import axios from 'axios'
 
 class SearchBar extends React.Component {
 
@@ -12,7 +12,7 @@ class SearchBar extends React.Component {
           handleInputChange = {this.props.handleInputChange}
         />
       </div>
-    );
+    )
   }
 }
 
@@ -28,7 +28,7 @@ function SearchForm(props)
       <input type="text" name="keyword" placeholder="Search" onChange={props.handleInputChange}/>
       <input onClick={props.handleSubmitClick} type="submit" value="Submit" />
     </form>
-  );
+  )
 }
 
-export default SearchBar;
+export default SearchBar
