@@ -7,7 +7,7 @@ class AddUser extends React.Component {
       <div id="AddUser" style={style}>
         AddUser
       </div>
-    );
+    )
   }
 }
 
@@ -17,4 +17,4 @@ const style=
   backgroundColor: "gray"
 }
 
-export default AddUser;
+export default AddUser

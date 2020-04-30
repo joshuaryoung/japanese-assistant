@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import axios from 'axios';
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { TransitionGroup, CSSTransition } from "react-transition-group"
+import axios from 'axios'
 
-import Home from './components/Home';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import UserLogin from './components/UserLogin';
-import AddUser from './components/AddUser';
-import UserDashboard from './components/UserDashboard';
-import { displayCards, commaSeparate, flattenArray, scrub, accValExtraction, scrubDuplicates } from './components/DisplayCards';
+import Home from './components/Home'
+import NavBar from './components/NavBar'
+import Footer from './components/Footer'
+import UserLogin from './components/UserLogin'
+import AddUser from './components/AddUser'
+import UserDashboard from './components/UserDashboard'
+import { displayCards, commaSeparate, flattenArray, scrub, accValExtraction, scrubDuplicates } from './components/DisplayCards'
 
-import './App.css';
+import './App.css'
 
 const mongoUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/mongo`,
       fbAuthUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/auth/facebookProxy`,
@@ -29,14 +29,14 @@ const mongoUrl = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/mongo`,
 					hiragana: null,
 					accValue: null
 				}
-			}];
+			}]
 			
-var keyword, newData = initialData, callBackCounter;
+var keyword, newData = initialData, callBackCounter
 
 class App extends Component {
   constructor(props)
   {
-    super(props);
+    super(props)
 
     this.initialState = {
       cards: [],
@@ -51,9 +51,9 @@ class App extends Component {
       name: '',
       serverResponse: '',
 			pitchArray: null
-    };
+    }
 
-    this.state = this.initialState;
+    this.state = this.initialState
 		if (this.state.isLoggedIn) {
 			this.fetchCardsFromDB()
 		}
@@ -61,56 +61,56 @@ class App extends Component {
 	
 	handleNewDataSort = () =>
 	{
-		newData.sort((a,b) => b.isCommon - a.isCommon);
+		newData.sort((a,b) => b.isCommon - a.isCommon)
 	}
 	
 	handlePopulateData = (newerData) =>
 	{
-		newerData = ( newerData ? newerData.map((mapData, i) => ({isCommon: mapData.is_common, japanese: {kanji: scrubDuplicates(flattenArray(mapData.japanese.map((jdata, k) => ( jdata.word ) ))), hiragana: scrubDuplicates(mapData.japanese.map((jdata) => (jdata.reading)))}, englishDefinitions: mapData.senses.map((sData) => sData.english_definitions.map((EDData) => EDData)), partsOfSpeech: commaSeparate(scrub('Wikipedia Definition', scrubDuplicates(mapData.senses.map((sData) => sData.parts_of_speech) ) ))})) : '');
+		newerData = ( newerData ? newerData.map((mapData, i) => ({isCommon: mapData.is_common, japanese: {kanji: scrubDuplicates(flattenArray(mapData.japanese.map((jdata, k) => ( jdata.word ) ))), hiragana: scrubDuplicates(mapData.japanese.map((jdata) => (jdata.reading)))}, englishDefinitions: mapData.senses.map((sData) => sData.english_definitions.map((EDData) => EDData)), partsOfSpeech: commaSeparate(scrub('Wikipedia Definition', scrubDuplicates(mapData.senses.map((sData) => sData.parts_of_speech) ) ))})) : '')
 
-		return newerData;
+		return newerData
 	}
 
   handleInputChange = (e) =>
   {
-    keyword = e.target.value;
+    keyword = e.target.value
   }
 
   initializeSearchVars = () =>
   {
-    newData = '';
-		callBackCounter = 0;
-    this.setState({pitchArray: []});
+    newData = ''
+		callBackCounter = 0
+    this.setState({pitchArray: []})
   }
 	
 	accValExtraction = (data) =>
 	{
-		let accVal = -1, equalSignIndex = -1;
-		equalSignIndex = data.indexOf('=');
+		let accVal = -1, equalSignIndex = -1
+		equalSignIndex = data.indexOf('=')
 		if(equalSignIndex > -1)
 		{
-			accVal = data[equalSignIndex+1];
+			accVal = data[equalSignIndex+1]
 		}
 
 		if(accVal === 'h')
 		{
-			accVal = 0;
+			accVal = 0
 		}
 		if(accVal === 'a')
 		{
-			accVal = 1;
+			accVal = 1
 		}
 		if(accVal === 'n')
 		{
-			accVal = 2;
+			accVal = 2
 		}
 		if(accVal === 'o')
 		{
-			accVal = 3;
+			accVal = 3
 		}
-		accVal = parseInt(accVal);
+		accVal = parseInt(accVal)
 
-		return accVal;
+		return accVal
 	}
 	
 	getAccData = () =>
@@ -119,74 +119,74 @@ class App extends Component {
 		{
 			if(Array.isArray(newData)) // IF DATA IS AN ARRAY
 			{
-				let sections, pWikiText, pIndex = -1, accValue, accString;
-				callBackCounter = newData.length;
+				let sections, pWikiText, pIndex = -1, accValue, accString
+				callBackCounter = newData.length
 				newData.map( (mapData, i) =>
 				{
 					axios.get(wikiUrl, {params: {...sectionsParams, page: mapData.japanese.kanji[0] ? mapData.japanese.kanji[0] : mapData.japanese.hiragana[0]}})
 					.then((response) =>  // SECTION SUCCESS
 					{
-						console.log('Section CALLBACK success');
+						console.log('Section CALLBACK success')
 						if(response.data.parse)
 						{
-							let japaneseSecFound = false;
-							sections = response.data.parse.sections;
+							let japaneseSecFound = false
+							sections = response.data.parse.sections
 							sections.map( (secMap, k) => // FIND JAPANESE SECTION
 							{
 								if(japaneseSecFound && secMap.line === 'Pronunciation') // IF JAPANESE SEC FOUND AND K REPRESENTS
 								{																												// THE PRONUNCIATION SECTION
-									pIndex = k+1;
-									k = sections.length;
+									pIndex = k+1
+									k = sections.length
 									axios.get(wikiUrl, {params: {...pronunciationParams, page: mapData.japanese.kanji[0] ? mapData.japanese.kanji[0] : mapData.japanese.hiragana[0], section: pIndex}})
 								  .then(response => // PRONUNCIATION SUCCESS
 								  {
-										console.log('Pronunciation CALLBACK success. i:', i, 'k:', k);
+										console.log('Pronunciation CALLBACK success. i:', i, 'k:', k)
 										if(response.data.parse) // IF DATA COMES BACK IN THE CORRECT FORMAT
 										{
-											pWikiText = response.data.parse.wikitext['*'];
-											accString = pWikiText.match(accRegex);
+											pWikiText = response.data.parse.wikitext['*']
+											accString = pWikiText.match(accRegex)
 											if(accString) // IF ACC STRING IS FOUND
 											{
-												accValue = this.accValExtraction(accString[0]);
+												accValue = this.accValExtraction(accString[0])
 											}
 											if(accValue > -1) // ACC VALUE IS ACTUAL PITCH VALUE
 											{
-												newData[i].japanese.accValue = accValue;
-												console.log('handleSDataUpdate about to be called and accValue was found');
-												this.handleSDataUpdate();
+												newData[i].japanese.accValue = accValue
+												console.log('handleSDataUpdate about to be called and accValue was found')
+												this.handleSDataUpdate()
 												if(callBackCounter === 1)
 												{
-													console.log('DONE LOADING ACC DATA');
+													console.log('DONE LOADING ACC DATA')
 												}else
 												{
 													console.log('callBackCounter:', callBackCounter, 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana)
-													callBackCounter --;
+													callBackCounter --
 												}
 											}else // ACC VALUE NOT AVAILABLE
 											{  
-												console.log('handleSDataUpdate about to be called and acc value not available');
-												this.handleSDataUpdate();
+												console.log('handleSDataUpdate about to be called and acc value not available')
+												this.handleSDataUpdate()
 												throw 'no accent value found in accString'
 											}
 										}else // WIKTIONARY ENTRY NOT FOUND
 										{
-											console.log('handleSDataUpdate about to be called');
-											this.handleSDataUpdate();
-											throw 'wiktionary entry not found';
+											console.log('handleSDataUpdate about to be called')
+											this.handleSDataUpdate()
+											throw 'wiktionary entry not found'
 										}
 									})
 									.catch(error => // PRONUNCIATION ERROR
 									{
-										console.log('handleSDataUpdate about to be called');
-										this.handleSDataUpdate();
-										console.log('Pronunciation callback error: ', error, 'i:', i);
+										console.log('handleSDataUpdate about to be called')
+										this.handleSDataUpdate()
+										console.log('Pronunciation callback error: ', error, 'i:', i)
 										if(callBackCounter === 1)
 										{
-											console.log('DONE LOADING ACC DATA', 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana);
+											console.log('DONE LOADING ACC DATA', 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana)
 										}else
 										{
 											console.log('callBackCounter:', callBackCounter, 'mapData.japanese.kanji:', mapData.japanese.kanji ? mapData.japanese.kanji : mapData.japanese.hiragana)
-											callBackCounter --;
+											callBackCounter --
 										}
 									})
 								}
@@ -194,48 +194,48 @@ class App extends Component {
 								//AFTER JAPANESE SECTION IS FOUND OR LOOP FINISHES
 								if(k + 1 === sections.length)
 								{
-									console.log('callBackCounter:', callBackCounter);
-									callBackCounter --;
+									console.log('callBackCounter:', callBackCounter)
+									callBackCounter --
 									if(!japaneseSecFound) // NO JAPANESE SECTION FOUND
 									{
-										console.log('handleSDataUpdate about to be called');
-										this.handleSDataUpdate();
-										console.log('No Japanese Section Found');
-										throw 'No Japanese Section Found';
+										console.log('handleSDataUpdate about to be called')
+										this.handleSDataUpdate()
+										console.log('No Japanese Section Found')
+										throw 'No Japanese Section Found'
 									}
 									if (pIndex === -1) // NO PRONUNCIATION SECTION
 									{
-										console.log('handleSDataUpdate about to be called');
-										this.handleSDataUpdate();
+										console.log('handleSDataUpdate about to be called')
+										this.handleSDataUpdate()
 										throw 'No pronunciation section found'
 									}
 								}
 								
 								if(!japaneseSecFound && secMap.line === 'Japanese')
 								{
-									japaneseSecFound = true;
+									japaneseSecFound = true
 								}
-							});
+							})
 							
 							
 						}
 					})
 					.catch(error =>  // SECTION ERROR
 					{
-						console.log('handleSDataUpdate about to be called, callBackCounter', callBackCounter);
-						this.handleSDataUpdate();
-						console.log('Section error:', error);
+						console.log('handleSDataUpdate about to be called, callBackCounter', callBackCounter)
+						this.handleSDataUpdate()
+						console.log('Section error:', error)
 						if(callBackCounter === 1)
 						{
-							console.log('DONE LOADING ACC DATA');
+							console.log('DONE LOADING ACC DATA')
 						}else
 						{
 							console.log('callBackCounter:', callBackCounter, 'mapData.japanese.kanji:', mapData.japanese.kanji[0] ? mapData.japanese.kanji : mapData.japanese.hiragana)
-							callBackCounter --;
+							callBackCounter --
 						}
 					})
 					
-				});
+				})
 			}
 			
 			
@@ -254,64 +254,64 @@ class App extends Component {
 							
 							
 						// }else {
-							// throw 'wiktionary entry not found';
+							// throw 'wiktionary entry not found'
 						// }
 					// },
 				 // response => //ERROR CALLBACK
 					// {
-						// console.log('CALLBACK ERROR from', data, response);
+						// console.log('CALLBACK ERROR from', data, response)
 					// })
 					// .then(response =>
 				 // {
 					 // , response => console.log('CALLBACK ERROR from', data, response))
-			 // }, response => console.log('CALLBACK ERROR from', data, response));
+			 // }, response => console.log('CALLBACK ERROR from', data, response))
 			// }
 		// }
-		// // data.prototype.accValue = accValue;
-		// return data;
+		// // data.prototype.accValue = accValue
+		// return data
 		}
 	}
 
   handleSDataUpdate = (pitchVal, key) =>
   {
-		let pitchArrayBuffer = newData.map( mData => mData.japanese.accValue );
-    console.log('handleSDataUpdate called');
-    console.log('newData', newData, 'pitchArrayBuffer', pitchArrayBuffer);
-		this.setState({sData: newData, pitchArray: pitchArrayBuffer});
+		let pitchArrayBuffer = newData.map( mData => mData.japanese.accValue )
+    console.log('handleSDataUpdate called')
+    console.log('newData', newData, 'pitchArrayBuffer', pitchArrayBuffer)
+		this.setState({sData: newData, pitchArray: pitchArrayBuffer})
   }
 
   handleSubmitClick = (e) =>
   {
-    e.preventDefault();
-    this.initializeSearchVars();
-    let searchTerm = keyword;
+    e.preventDefault()
+    this.initializeSearchVars()
+    let searchTerm = keyword
     axios.get(jishoUrl, {params: {keyword: '"'+ searchTerm + '"'}})
 		.then(response =>
 		{
-      this.handleShowSearchResults();
-      this.handleSearchCallBack(response);
+      this.handleShowSearchResults()
+      this.handleSearchCallBack(response)
     },
     error => 
 		{
 			this.setState({serverResponse: error, isDisplayingResults: true})
-			console.log(error);
-		});
+			console.log(error)
+		})
   }
 
   handleSearchCallBack = (response) =>
   {
-		newData = this.handlePopulateData(response.data.data);
-		this.handleNewDataSort();
-		this.getAccData();
-    this.setState({serverResponse: response, sData: newData});
+		newData = this.handlePopulateData(response.data.data)
+		this.handleNewDataSort()
+		this.getAccData()
+    this.setState({serverResponse: response, sData: newData})
   }
 
   handleLogout = (e) =>
   {
-    e.preventDefault();
-    window.FB.logout();
-    this.setState(this.initialState);
-    console.log("handleLogout called");
+    e.preventDefault()
+    window.FB.logout()
+    this.setState(this.initialState)
+    console.log("handleLogout called")
   }
 
   responseFacebook = response =>
@@ -322,50 +322,50 @@ class App extends Component {
       pic: response.picture.data.url,
       email: response.email,
       name: response.name
-    });
-    this.fetchCardsFromDB();
+    })
+    this.fetchCardsFromDB()
   }
 
   handleSaveFlashCardsToDB = (e) =>
   {
-    axios.get(mongoUrl+'updatecards', {params: {id: this.state.id, cards: this.state.cards}}).then(response => console.log(response.data), response => console.log(response));
+    axios.get(mongoUrl+'updatecards', {params: {id: this.state.id, cards: this.state.cards}}).then(response => console.log(response.data), response => console.log(response))
   }
 
   handleAddToFlashCard = (data, i, e) =>
   {
-    let cardsCopy = this.state.cards;
-    cardsCopy.push(data);
-    this.handleShowDashboardResults();
-    this.setState({cards: cardsCopy});
-    this.handleSaveFlashCardsToDB();
+    let cardsCopy = this.state.cards
+    cardsCopy.push(data)
+    this.handleShowDashboardResults()
+    this.setState({cards: cardsCopy})
+    this.handleSaveFlashCardsToDB()
   }
 
   handleDelete = (data, i, e) =>
   {
-    let cardsCopy = this.state.cards;
-    cardsCopy.splice(i,1);
+    let cardsCopy = this.state.cards
+    cardsCopy.splice(i,1)
     if(cardsCopy.length < 1)
     {
       this.setState({
         showDashboardResults: false
       })
     }
-    this.setState({cards: cardsCopy});
-    this.handleSaveFlashCardsToDB();
+    this.setState({cards: cardsCopy})
+    this.handleSaveFlashCardsToDB()
   }
 
   handleShowSearchResults = () =>
   {
     this.setState({
       showSearchResults: true
-    });
+    })
   }
 
   handleShowDashboardResults = () =>
   {
     this.setState({
       showDashboardResults: true
-    });
+    })
   }
 
   fetchCardsFromDB = () =>
@@ -373,14 +373,14 @@ class App extends Component {
     axios.get(mongoUrl+'readcards', {params: {id: this.state.id}})
     .then( (value) =>
       {
-        this.setState({cards: value.data, showDashboardResults: true});
+        this.setState({cards: value.data, showDashboardResults: true})
       },
       (response) =>
       {
         console.log(response)
-        return response;
+        return response
       }
-    );
+    )
   }
 
   render() {
@@ -463,7 +463,7 @@ class App extends Component {
           } />
         </Router>
       </div>
-    );
+    )
   }
 }
 
@@ -472,6 +472,6 @@ const navLinks = [
   {name:'UserLogin', component: UserLogin, routeLocation: '/UserLogin', activeLinkHighlight: {x: '32.9vw', y: '0vh'}},
   {name:'AddUser', component: AddUser, routeLocation: '/AddUser', activeLinkHighlight: {x: '32.9vw', y: '0vh'}},
   {name:'UserDashboard', component: UserDashboard, routeLocation: '/UserDashboard', activeLinkHighlight: {x: '32.9vw', y: '0vh'}}
-];
+]
 
-export default App;
+export default App
