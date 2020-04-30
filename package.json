@@ -20,7 +20,7 @@
     "wiktionary": "^1.2.0"
   },
   "scripts": {
-    "start": "docker-compose up -d --remove-orphans react-scripts start",
+    "start": "docker-compose up -d --remove-orphans; react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
